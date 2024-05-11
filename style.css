@@ -1,0 +1,169 @@
+/* Global styles */
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.theme-selector {
+    margin: 20px;
+}
+
+.title {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+
+.container {
+    text-align: center;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    gap: 10px;
+    background-color: #fff; /* Default background color */
+}
+
+.cell {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    border: 2px solid #333; /* Default cell border */
+}
+
+.result {
+    margin-top: 20px;
+    font-size: 20px;
+}
+
+/* Theme styles */
+.theme-default .board {
+    background-color: #ffffff;
+}
+
+.theme-dark {
+    background: #000000;
+    color: #fff;
+}
+
+.theme-dark .cell {
+    border: 2px solid #777;
+}
+
+.theme-light {
+    background: #f0f0f0;
+    color: #333;
+}
+
+.theme-light .cell {
+    border: 2px solid #ccc;
+}
+
+.theme-neon {
+    background: #000;
+    color: #0f0;
+}
+
+.theme-neon .cell {
+    border: 2px solid #0f0;
+}
+
+/* Custom theme applied via JavaScript */
+
+/* Popup styling */
+.game-result-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 20px;
+    border: 2px solid #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.popup-content h1 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.popup-content button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.popup-content button:hover {
+    background-color: #555;
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .title {
+        font-size: 32px; /* Smaller font size for smaller screens */
+    }
+
+    .board {
+        grid-template-columns: repeat(3, 80px); /* Smaller cells for smaller screens */
+        gap: 5px;
+    }
+
+    .cell {
+        width: 80px;
+        height: 80px;
+        font-size: 18px; /* Smaller font size for smaller screens */
+    }
+
+    .result {
+        font-size: 16px; /* Smaller font size for smaller screens */
+    }
+
+    .popup-content button {
+        padding: 5px 10px;
+        font-size: 14px; /* Smaller font size for smaller screens */
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .title {
+        font-size: 40px; /* Medium font size for medium screens */
+    }
+
+    .board {
+        grid-template-columns: repeat(3, 90px); /* Medium cells for medium screens */
+        gap: 7px;
+    }
+
+    .cell {
+        width: 90px;
+        height: 90px;
+        font-size: 20px; /* Medium font size for medium screens */
+    }
+
+    .result {
+        font-size: 18px; /* Medium font size for medium screens */
+    }
+
+    .popup-content button {
+        padding: 7px 15px;
+        font-size: 15px; /* Medium font size for medium screens */
+    }
+}

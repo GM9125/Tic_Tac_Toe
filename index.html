@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Tic Tac Toe</title>
+</head>
+<body class="theme-default">
+    <div class="container">
+        <div class="title">Tic Tac Toe</div>
+        <div class="theme-selector">
+            <label for="theme">Choose a theme:</label>
+            <select id="theme">
+                <option value="default">Default</option>
+                <option value="dark">Dark</option>
+                <option value="light">Light</option>
+                <option value="neon">Neon</option>
+                <option value="custom">Custom</option>
+            </select>
+            <input type="color" id="color-picker" style="display: none;">
+        </div>
+        <div id="board" class="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div id="result" class="result"></div>
+    </div>
+    <div id="game-result-popup" class="game-result-popup" style="display: none;">
+        <div class="popup-content">
+            <h1 id="winner-message"></h1>
+            <button onclick="playAgain();">Play Again</button>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Made with ❤️ by Ghulam Mustafa</p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

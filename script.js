@@ -36,23 +36,26 @@ document.addEventListener('DOMContentLoaded', () => {
             light: '#f0f0f0',
             neon: '#0f0'
         };
-        if (theme !== 'dark') {
-            popup.style.backgroundColor = themeColors[theme] || themeColors.default;
-        } else {
-            popup.style.backgroundColor = '#fff';
-        }
+        popup.style.backgroundColor = themeColors[theme] || themeColors.default;
+    
+        // Fix text visibility in dark mode
+        popup.style.color = theme === 'dark' ? '#fff' : '#333'; 
+        document.getElementById('winner-message').style.color = theme === 'dark' ? '#fff' : '#333';
     }
+    
+    
 
     board.addEventListener('click', (e) => {
         const cell = e.target;
         const index = cell.dataset.index;
 
-        if (gameBoard[index] === '' && gameActive) {
-            gameBoard[index] = currentPlayer;
+        if (gameBoard[index] === '' && gameActive && currentPlayer === 'X') {
+            gameBoard[index] = 'X';
             updateBoard();
             checkResult();
-            currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-            displayPlayerTurn();
+            if (gameActive) {
+                setTimeout(botMove, 500);
+            }
         }
     });
 
@@ -63,12 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function displayPlayerTurn() {
-        if (gameActive) {
-            resultDisplay.textContent = `Player ${currentPlayer}'s turn`;
-        }
-    }
-
     function checkResult() {
         const winPatterns = [
             [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -76,26 +73,66 @@ document.addEventListener('DOMContentLoaded', () => {
             [0, 4, 8], [2, 4, 6]
         ];
 
-        winPatterns.forEach(pattern => {
+        for (let pattern of winPatterns) {
             const [a, b, c] = pattern;
             if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
-                showPopup(`${currentPlayer} Wins!`);
+                showPopup(`${gameBoard[a]} Wins!`);
                 gameActive = false;
-                resultDisplay.textContent = '';
                 return;
             }
-        });
+        }
 
         if (!gameBoard.includes('') && gameActive) {
-            showPopup(`It's a draw!`);
+            showPopup("It's a draw!");
             gameActive = false;
-            resultDisplay.textContent = '';
         }
     }
 
+    function botMove() {
+        let bestMove = minimax(gameBoard, 'O').index;
+        if (bestMove !== undefined) {
+            gameBoard[bestMove] = 'O';
+            updateBoard();
+            checkResult();
+        }
+    }
+
+    function minimax(newBoard, player) {
+        let emptyCells = newBoard.map((v, i) => (v === '' ? i : null)).filter(i => i !== null);
+
+        if (checkWin(newBoard, 'X')) return { score: -10 };
+        if (checkWin(newBoard, 'O')) return { score: 10 };
+        if (emptyCells.length === 0) return { score: 0 };
+
+        let moves = [];
+        for (let i of emptyCells) {
+            let move = {};
+            move.index = i;
+            newBoard[i] = player;
+
+            if (player === 'O') {
+                move.score = minimax(newBoard, 'X').score;
+            } else {
+                move.score = minimax(newBoard, 'O').score;
+            }
+
+            newBoard[i] = '';
+            moves.push(move);
+        }
+
+        return moves.reduce((best, move) => (player === 'O' ? (move.score > best.score ? move : best) : (move.score < best.score ? move : best)), moves[0]);
+    }
+
+    function checkWin(board, player) {
+        return [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8],
+            [0, 3, 6], [1, 4, 7], [2, 5, 8],
+            [0, 4, 8], [2, 4, 6]
+        ].some(pattern => pattern.every(i => board[i] === player));
+    }
+
     function showPopup(message) {
-        const winnerMessage = document.getElementById('winner-message');
-        winnerMessage.textContent = message;
+        document.getElementById('winner-message').textContent = message;
         popup.style.display = 'flex';
     }
 
@@ -103,12 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gameBoard = ['', '', '', '', '', '', '', '', ''];
         currentPlayer = 'X';
         gameActive = true;
-        resultDisplay.textContent = `Player ${currentPlayer}'s turn`;
         updateBoard();
-        hidePopup();
-    };
-
-    function hidePopup() {
         popup.style.display = 'none';
-    }
+    };
 });
